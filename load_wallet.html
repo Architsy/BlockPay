@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Load Wallet - Solana Blockchain Suite</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #1a1a1a;
+            color: #ffffff;
+            font-family: 'Roboto', sans-serif;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        h1 {
+            color: #00ff9d;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 30px;
+        }
+        .form-group label {
+            color: #ffffff;
+            font-size: 1.1rem;
+        }
+        .form-control {
+            background-color: #2c2c2c;
+            border: none;
+            color: #ffffff;
+            border-radius: 5px;
+            padding: 10px;
+        }
+        .form-control:focus {
+            background-color: #3c3c3c;
+            color: #ffffff;
+            box-shadow: none;
+        }
+        .btn-primary {
+            background-color: #00ff9d;
+            border: none;
+            color: #1a1a1a;
+            font-weight: 700;
+            padding: 10px 20px;
+            transition: background-color 0.3s;
+        }
+        .btn-primary:hover {
+            background-color: #00cc7d;
+        }
+        .alert {
+            background-color: #2c2c2c;
+            border: none;
+            color: #ffffff;
+            border-radius: 5px;
+            padding: 15px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Load Wallet</h1>
+        <form method="POST">
+            <div class="form-group">
+                <label for="private_key">Private Key</label>
+                <input type="text" class="form-control" id="private_key" name="private_key" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Load Wallet</button>
+        </form>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+</body>
+</html> 

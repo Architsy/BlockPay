@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scan QR Code - Solana Blockchain Suite</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/html5-qrcode"></script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2c2c2c 100%);
+            color: #ffffff;
+            font-family: 'Roboto', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .container {
+            max-width: 900px;
+            padding: 50px;
+            background-color: #2c2c2c;
+            border-radius: 20px;
+            box-shadow: 0 15px 30px rgba(102, 72, 225, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        h1 {
+            color: #6648e1;
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        #reader {
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto 30px auto;
+            background-color: #3c3c3c;
+            border-radius: 15px;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 10px 20px rgba(102, 72, 225, 0.1);
+            transition: all 0.3s ease;
+        }
+        .result-container {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #3c3c3c;
+            border-radius: 15px;
+            display: none;
+            position: relative;
+            z-index: 1;
+            animation: slideUp 0.5s ease;
+            word-break: break-all;
+            white-space: pre-line;
+        }
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .result-container.active {
+            display: block;
+        }
+        .result-container h3 {
+            color: #6648e1;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+        .result-container p {
+            margin: 15px 0;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .result-container strong {
+            color: #6648e1;
+            min-width: 100px;
+        }
+        .btn-primary {
+            background: linear-gradient(45deg, #6648e1, #5236b3);
+            border: none;
+            color: #ffffff;
+            font-weight: 700;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            width: 100%;
+            margin-top: 20px;
+        }
+        .btn-primary:active {
+            transform: translateY(1px);
+        }
+        .alert {
+            background-color: #3c3c3c;
+            border: none;
+            color: #ffffff;
+            border-radius: 12px;
+            padding: 15px;
+            margin-top: 20px;
+            position: relative;
+            z-index: 1;
+            animation: slideIn 0.5s ease;
+        }
+        @keyframes slideIn {
+            from { transform: translateY(-20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .scanning-animation {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 2px solid #6648e1;
+            border-radius: 15px;
+            animation: scanning 2s linear infinite;
+            pointer-events: none;
+        }
+        @keyframes scanning {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100%); }
+        }
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0,0,0,0.7);
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+        .popup {
+            background: #2c2c2c;
+            border-radius: 18px;
+            padding: 36px 32px;
+            max-width: 400px;
+            width: 90vw;
+            box-shadow: 0 8px 32px rgba(102, 72, 225, 0.2);
+            text-align: center;
+            position: relative;
+        }
+        .popup-close {
+            position: absolute;
+            top: 12px;
+            right: 18px;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1.7rem;
+            cursor: pointer;
+        }
+        .popup-title {
+            color: #6648e1;
+            margin-bottom: 18px;
+        }
+        .popup-content {
+            word-break: break-all;
+            color: #fff;
+            margin-bottom: 18px;
+            white-space: pre-line;
+        }
+        .card {
+            background-color: #2c2c2c;
+            border: none;
+            border-radius: 10px;
+        }
+        .card-header {
+            background-color: #1a1a1a;
+            border-bottom: 2px solid #6648e1;
+        }
+        .btn-secondary {
+            background-color: #2c2c2c;
+            border: 1px solid #6648e1;
+            color: #6648e1;
+        }
+        .btn-secondary:hover {
+            background-color: #6648e1;
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="text-center">Scan QR Code</h3>
+                    </div>
+                    <div class="card-body">
+                        <a href="/" class="btn btn-secondary mb-3">← Back</a>
+                        <button id="start-scan-btn" class="btn btn-primary" type="button" style="margin-bottom: 20px;">Start Scanning</button>
+                        <div id="reader" style="display:none;">
+                            <div class="scanning-animation"></div>
+                        </div>
+                        <div id="result" class="result-container">
+                            <h3>Scan Result</h3>
+                            <p><strong>Decoded Text:</strong> <span id="decoded-text"></span></p>
+                            <button id="proceed-btn" class="btn-primary" style="display:none; margin-top:16px;" onclick="sendScannedData()">Proceed with This QR</button>
+                        </div>
+                        <form id="scan-form" method="POST" action="/scan_qr" style="display:none;">
+                            <input type="hidden" name="qr_data" id="qr_data_input">
+                        </form>
+                        <div class="popup-overlay" id="qr-popup">
+                            <div class="popup">
+                                <button class="popup-close" onclick="closeQrPopup()">&times;</button>
+                                <h3 class="popup-title">Scanned QR Content</h3>
+                                <div class="popup-content" id="qr-link-content"></div>
+                                <a id="open-link-btn" href="#" target="_blank" class="btn btn-primary" style="margin-bottom:8px;">Open Link</a>
+                            </div>
+                        </div>
+                        {% with messages = get_flashed_messages(with_categories=true) %}
+                            {% if messages %}
+                                {% for category, message in messages %}
+                                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                                {% endfor %}
+                            {% endif %}
+                        {% endwith %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        let scannedText = null;
+        let html5QrcodeScanner = null;
+        document.getElementById('start-scan-btn').addEventListener('click', function() {
+            document.getElementById('reader').style.display = 'block';
+            if (!html5QrcodeScanner) {
+                html5QrcodeScanner = new Html5QrcodeScanner(
+                    "reader",
+                    {
+                        fps: 10,
+                        qrbox: {width: 300, height: 300},
+                        aspectRatio: 1.0,
+                        showTorchButtonIfSupported: true,
+                        showZoomSliderIfSupported: true,
+                        defaultZoomValueIfSupported: 2
+                    },
+                    false
+                );
+                html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+            }
+            this.style.display = 'none';
+        });
+        function onScanSuccess(decodedText, decodedResult) {
+            html5QrcodeScanner.clear(); // Stop scanning
+            document.getElementById('decoded-text').textContent = decodedText;
+            document.getElementById('result').classList.add('active');
+            const result = document.getElementById('result');
+            result.style.animation = 'none';
+            result.offsetHeight;
+            result.style.animation = 'slideUp 0.5s ease';
+            showQrPopup(decodedText);
+            scannedText = decodedText;
+            document.getElementById('proceed-btn').style.display = 'block';
+        }
+        function sendScannedData() {
+            if (scannedText) {
+                document.getElementById('qr_data_input').value = scannedText;
+                document.getElementById('scan-form').submit();
+            }
+        }
+        function showQrPopup(link) {
+            document.getElementById('qr-link-content').textContent = link;
+            document.getElementById('open-link-btn').href = link;
+            document.getElementById('qr-popup').style.display = 'flex';
+        }
+        function closeQrPopup() {
+            document.getElementById('qr-popup').style.display = 'none';
+        }
+        function onScanFailure(error) {
+            console.warn(`QR code scanning failed: ${error}`);
+        }
+    </script>
+</body>
+</html> 

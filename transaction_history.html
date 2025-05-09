@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transaction History - Solana Blockchain Suite</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2c2c2c 100%);
+            color: #ffffff;
+            font-family: 'Roboto', sans-serif;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .container {
+            max-width: 700px;
+            margin: 60px auto;
+            background: #232d3f;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+            padding: 40px 30px;
+        }
+        h1 {
+            color: #00ff9d;
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 18px;
+            text-align: center;
+        }
+        .wallet-address {
+            color: #00ff9d;
+            font-size: 1.1rem;
+            word-break: break-all;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .tx-list {
+            list-style: none;
+            padding: 0;
+        }
+        .tx-item {
+            background: #2c2c2c;
+            border-radius: 12px;
+            margin-bottom: 18px;
+            padding: 18px 20px;
+            box-shadow: 0 2px 8px rgba(0,255,157,0.04);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .tx-signature {
+            color: #fff;
+            font-size: 1rem;
+            word-break: break-all;
+        }
+        .tx-slot {
+            color: #00ff9d;
+            font-size: 0.98rem;
+        }
+        .explorer-link {
+            color: #00ff9d;
+            text-decoration: underline;
+            font-size: 0.98rem;
+            margin-top: 4px;
+        }
+        .no-tx {
+            color: #fff;
+            text-align: center;
+            margin-top: 30px;
+            font-size: 1.1rem;
+        }
+        .btn-close {
+            position: absolute;
+            top: 18px;
+            right: 30px;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1.7rem;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container position-relative">
+        <button class="btn-close" onclick="window.close()">&times;</button>
+        <h1>Last 5 Transactions</h1>
+        <div class="wallet-address">Wallet: {{ wallet }}</div>
+        {% if transactions and transactions|length > 0 %}
+        <ul class="tx-list">
+            {% for tx in transactions %}
+            <li class="tx-item">
+                <div class="tx-signature"><b>Signature:</b> {{ tx.signature }}</div>
+                <div class="tx-slot"><b>Slot:</b> {{ tx.slot }}</div>
+                <a class="explorer-link" href="https://explorer.solana.com/tx/{{ tx.signature }}?cluster=devnet" target="_blank">View on Solana Explorer</a>
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <div class="no-tx">No transactions found for this wallet.</div>
+        {% endif %}
+    </div>
+</body>
+</html> 

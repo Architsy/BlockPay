@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Load Wallet - Solana Blockchain Suite</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #1a1a1a;
+            color: #ffffff;
+            font-family: 'Roboto', sans-serif;
+        }
+        .container {
+            max-width: 900px;
+            margin-top: 40px;
+            background: #2c2c2c;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(102,72,225,0.18);
+            padding: 40px 30px;
+        }
+        h1 {
+            color: #6648e1;
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .form-group label {
+            color: #ffffff;
+            font-size: 1.1rem;
+        }
+        .form-control {
+            background-color: #232d3f;
+            border: 2px solid #6648e1;
+            color: #ffffff;
+            border-radius: 8px;
+            padding: 12px;
+        }
+        .form-control:focus {
+            background-color: #232d3f;
+            color: #ffffff;
+            box-shadow: 0 0 0 3px rgba(102, 72, 225, 0.2);
+        }
+        .btn-primary {
+            background: linear-gradient(45deg, #6648e1, #5236b3);
+            border: none;
+            color: #ffffff;
+            font-weight: 700;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            background: linear-gradient(45deg, #5236b3, #6648e1);
+            color: #fff;
+        }
+        .alert {
+            background-color: #232d3f;
+            border: none;
+            color: #ffffff;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
+        }
+        .btn-secondary {
+            background-color: #2c2c2c;
+            border: 1px solid #6648e1;
+            color: #6648e1;
+            border-radius: 8px;
+            padding: 6px 18px;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: background 0.2s, color 0.2s;
+            box-shadow: none;
+            outline: none;
+            display: inline-block;
+        }
+        .btn-secondary:hover {
+            background-color: #6648e1;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/" class="btn btn-secondary mb-3">← Back</a>
+        <h1>Load Existing Wallet</h1>
+        <form method="POST">
+            <div class="form-group">
+                <label for="private_key">Private Key</label>
+                <input type="text" class="form-control" id="private_key" name="private_key" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Load Wallet</button>
+        </form>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} mt-3">
+                        {{ message | replace('\n', '<br>') | safe }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+</body>
+</html> 

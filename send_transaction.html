@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Send Transaction - Solana Blockchain Suite</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #1a1a1a;
+            color: #ffffff;
+            font-family: 'Roboto', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2c2c2c 100%);
+        }
+        .container {
+            max-width: 800px;
+            padding: 40px;
+            background-color: #2c2c2c;
+            border-radius: 20px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        .container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0, 255, 157, 0.1) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+        }
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        h1 {
+            color: #00ff9d;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 30px;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+        .form-group {
+            position: relative;
+            z-index: 1;
+            margin-bottom: 25px;
+        }
+        .form-group label {
+            color: #ffffff;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            display: block;
+        }
+        .form-control {
+            background-color: #3c3c3c;
+            border: 2px solid #00ff9d;
+            color: #ffffff;
+            border-radius: 12px;
+            padding: 15px;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+        .form-control:focus {
+            background-color: #3c3c3c;
+            color: #ffffff;
+            box-shadow: 0 0 0 3px rgba(0, 255, 157, 0.2);
+        }
+        .btn-primary {
+            background: linear-gradient(45deg, #00ff9d, #00cc7d);
+            border: none;
+            color: #1a1a1a;
+            font-weight: 700;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            width: 100%;
+        }
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #00cc7d, #00ff9d);
+            z-index: -1;
+            transition: opacity 0.4s ease;
+            opacity: 0;
+        }
+        .btn-primary:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 10px 20px rgba(0, 255, 157, 0.2);
+        }
+        .btn-primary:hover::before {
+            opacity: 1;
+        }
+        .btn-primary:active {
+            transform: translateY(1px);
+        }
+        .alert {
+            background-color: #3c3c3c;
+            border: none;
+            color: #ffffff;
+            border-radius: 12px;
+            padding: 15px;
+            margin-top: 20px;
+            position: relative;
+            z-index: 1;
+            animation: slideIn 0.5s ease;
+        }
+        @keyframes slideIn {
+            from { transform: translateY(-20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .wallet-list {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #3c3c3c;
+            border-radius: 15px;
+            position: relative;
+            z-index: 1;
+        }
+        .wallet-item {
+            padding: 15px;
+            margin-bottom: 10px;
+            background-color: #2c2c2c;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .wallet-item:hover {
+            transform: translateX(10px);
+            background-color: #3c3c3c;
+        }
+        .wallet-item.selected {
+            border: 2px solid #00ff9d;
+            background-color: rgba(0, 255, 157, 0.1);
+        }
+        .wallet-name {
+            color: #00ff9d;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        .wallet-address {
+            color: #ffffff;
+            opacity: 0.8;
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+        .wallet-balance {
+            color: #ffffff;
+            font-weight: 700;
+        }
+        .current-wallet {
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: #3c3c3c;
+            border-radius: 15px;
+            position: relative;
+            z-index: 1;
+        }
+        .current-wallet h3 {
+            color: #00ff9d;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Send Transaction</h1>
+        
+        {% if session.get('wallet') %}
+        <div class="current-wallet">
+            <h3>Your Wallet</h3>
+            <p class="wallet-name">{{ session['wallet']['public_key'] }}</p>
+            <p class="wallet-balance">Balance: {{ session['wallet']['balance'] }} SOL</p>
+        </div>
+        {% endif %}
+        
+        <form method="POST">
+            <div class="form-group">
+                <label for="receiver">Select Receiver Wallet</label>
+                <select class="form-control" id="receiver" name="receiver" required>
+                    <option value="">Select a wallet...</option>
+                    {% for wallet in predefined_wallets %}
+                    <option value="{{ wallet.public_key }}" {% if scanned_receiver == wallet.public_key %}selected{% endif %}>
+                        {{ wallet.name }} ({{ wallet.public_key }}) - Balance: {{ wallet.balance }} SOL
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="amount">Amount (SOL)</label>
+                <input type="number" step="0.000000001" class="form-control" id="amount" name="amount" required value="{{ scanned_amount if scanned_amount else '' }}">
+            </div>
+            
+            <button type="submit" class="btn-primary">Send Transaction</button>
+        </form>
+        
+        <div class="wallet-list">
+            <h3>Available Wallets</h3>
+            {% for wallet in predefined_wallets %}
+            <div class="wallet-item" onclick="selectWallet('{{ wallet.public_key }}')">
+                <div class="wallet-name">{{ wallet.name }}</div>
+                <div class="wallet-address">{{ wallet.public_key }}</div>
+                <div class="wallet-balance">Balance: {{ wallet.balance }} SOL</div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+    
+    <script>
+        function selectWallet(address) {
+            document.getElementById('receiver').value = address;
+            document.querySelectorAll('.wallet-item').forEach(item => {
+                item.classList.remove('selected');
+                if (item.querySelector('.wallet-address').textContent === address) {
+                    item.classList.add('selected');
+                }
+            });
+        }
+        
+        // Add loading animation to button
+        document.querySelector('.btn-primary').addEventListener('click', function() {
+            this.classList.add('loading');
+            setTimeout(() => this.classList.remove('loading'), 1000);
+        });
+    </script>
+</body>
+</html> 

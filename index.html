@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solana Blockchain Suite</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(120deg, #1a1a1a 60%, #232d3f 100%);
+            color: #ffffff;
+            font-family: 'Roboto', sans-serif;
+            min-height: 100vh;
+        }
+        .main-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            max-width: 1400px;
+            margin: 60px auto 40px auto;
+            padding: 0 20px;
+        }
+        .left-section, .right-section {
+            background: rgba(44, 62, 80, 0.98);
+            border-radius: 24px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+            padding: 40px 30px;
+            min-width: 340px;
+        }
+        .left-section {
+            flex: 1 1 350px;
+            max-width: 420px;
+            margin-right: 0;
+        }
+        .right-section {
+            flex: 2 1 600px;
+            min-width: 400px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 50px 0 30px 0;
+            background: linear-gradient(135deg, rgba(0, 255, 157, 0.12) 0%, rgba(0, 204, 125, 0.10) 100%);
+            border-radius: 30px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+        }
+        .header h1 {
+            font-size: 3.2rem;
+            font-weight: 700;
+            color: #00ff9d;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+        .header p {
+            font-size: 1.3rem;
+            color: #e0e0e0;
+            opacity: 0.92;
+            margin-bottom: 0;
+        }
+        .feature-list {
+            margin-bottom: 0;
+        }
+        .feature-list h2 {
+            color: #00ff9d;
+            font-size: 1.5rem;
+            margin-bottom: 25px;
+            border-bottom: 2px solid #00ff9d;
+            padding-bottom: 10px;
+        }
+        .feature-list ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .feature-list li {
+            margin-bottom: 18px;
+        }
+        .feature-list a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.13rem;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px 18px;
+            border-radius: 12px;
+            background: linear-gradient(45deg, #2c2c2c, #3c3c3c);
+            border: 1px solid rgba(0, 255, 157, 0.08);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 2px 8px rgba(0,255,157,0.03);
+            font-weight: 500;
+            position: relative;
+        }
+        .feature-list a i {
+            font-size: 1.3rem;
+            color: #00ff9d;
+            min-width: 28px;
+            text-align: center;
+        }
+        .feature-list a:hover {
+            color: #00ff9d;
+            background: linear-gradient(45deg, #3c3c3c, #4c4c4c);
+            transform: scale(1.03) translateX(8px);
+            box-shadow: 0 6px 18px rgba(0,255,157,0.08);
+        }
+        .section-divider {
+            height: 2px;
+            background: linear-gradient(90deg, #00ff9d 0%, #232d3f 100%);
+            border: none;
+            margin: 40px 0 30px 0;
+            opacity: 0.18;
+        }
+        .qr-features {
+            display: flex;
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+        .qr-feature {
+            flex: 1;
+            text-align: center;
+            padding: 28px 18px 24px 18px;
+            background: linear-gradient(45deg, #2c2c2c, #3c3c3c);
+            border-radius: 15px;
+            border: 1px solid rgba(0, 255, 157, 0.10);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 2px 8px rgba(0,255,157,0.03);
+            margin-bottom: 0;
+        }
+        .qr-feature i {
+            font-size: 2.2rem;
+            color: #00ff9d;
+            margin-bottom: 12px;
+        }
+        .qr-feature h3 {
+            color: #fff;
+            font-size: 1.15rem;
+            margin-bottom: 8px;
+        }
+        .qr-feature p {
+            color: #e0e0e0;
+            opacity: 0.85;
+            font-size: 0.98rem;
+            margin-bottom: 18px;
+        }
+        .qr-feature .btn {
+            margin-top: 8px;
+            width: 100%;
+        }
+        .qr-feature:hover {
+            transform: scale(1.04) translateY(-6px);
+            background: linear-gradient(45deg, #3c3c3c, #4c4c4c);
+            box-shadow: 0 8px 24px rgba(0,255,157,0.10);
+        }
+        .predefined-wallets {
+            background: #232d3f;
+            border-radius: 15px;
+            padding: 24px 18px;
+            margin-bottom: 32px;
+            box-shadow: 0 2px 8px rgba(0,255,157,0.03);
+        }
+        .predefined-wallets h2 {
+            color: #00ff9d;
+            font-size: 1.2rem;
+            margin-bottom: 18px;
+            border-bottom: 1px solid #00ff9d;
+            padding-bottom: 7px;
+        }
+        .predefined-wallets ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .predefined-wallets li {
+            margin-bottom: 10px;
+        }
+        .predefined-wallets a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            border-radius: 8px;
+            background: #2c2c2c;
+            transition: all 0.3s;
+        }
+        .predefined-wallets a i {
+            color: #00ff9d;
+            font-size: 1.1rem;
+        }
+        .predefined-wallets a:hover {
+            color: #00ff9d;
+            background: #3c3c3c;
+            transform: scale(1.02) translateX(6px);
+        }
+        .how-to-use {
+            background: #232d3f;
+            border-radius: 15px;
+            padding: 24px 18px;
+            box-shadow: 0 2px 8px rgba(0,255,157,0.03);
+        }
+        .how-to-use h2 {
+            color: #00ff9d;
+            font-size: 1.2rem;
+            margin-bottom: 18px;
+            border-bottom: 1px solid #00ff9d;
+            padding-bottom: 7px;
+        }
+        .how-to-use p {
+            font-size: 1.05rem;
+            line-height: 1.7;
+            margin-bottom: 18px;
+        }
+        .how-to-use ol {
+            padding-left: 20px;
+        }
+        .how-to-use li {
+            margin-bottom: 12px;
+            line-height: 1.5;
+        }
+        .how-to-use strong {
+            color: #00ff9d;
+        }
+        @media (max-width: 1100px) {
+            .main-container {
+                flex-direction: column;
+                gap: 30px;
+            }
+            .left-section, .right-section {
+                max-width: 100%;
+                min-width: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Solana Blockchain Suite</h1>
+        <p>Your all-in-one solution for Solana blockchain interactions</p>
+    </div>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="container mt-3">
+          {% for category, message in messages %}
+            <div class="alert alert-{{ 'success' if category == 'success' else 'danger' if category == 'error' else 'info' }}" style="font-size:1.1rem; margin-bottom:12px;">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+    <div class="main-container">
+        <div class="left-section">
+            <div class="feature-list">
+                <h2>Features</h2>
+                <ul>
+                    <li><a href="{{ url_for('create_wallet') }}"><i class="fas fa-wallet"></i> Create Wallet</a></li>
+                    <li><a href="{{ url_for('load_wallet') }}"><i class="fas fa-folder-open"></i> Load Wallet</a></li>
+                    <li><a href="{{ url_for('check_balance') }}"><i class="fas fa-balance-scale"></i> Check Balance</a></li>
+                    <li><a href="{{ url_for('send_transaction') }}"><i class="fas fa-paper-plane"></i> Send Transaction</a></li>
+                    <li><a href="{{ url_for('transaction_history') }}"><i class="fas fa-history"></i> Transaction History</a></li>
+                    <li><a href="{{ url_for('latest_block_info') }}"><i class="fas fa-cube"></i> Latest Block Info</a></li>
+                    <li><a href="{{ url_for('upload_to_drive') }}"><i class="fas fa-cloud-upload-alt"></i> Upload to Google Drive</a></li>
+                    <li><a href="{{ url_for('validate_keypair') }}"><i class="fas fa-key"></i> Validate Keypair</a></li>
+                    <li><a href="{{ url_for('connect_metamask') }}"><i class="fas fa-link"></i> Connect MetaMask</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="right-section">
+            <div class="qr-features">
+                <div class="qr-feature">
+                    <i class="fas fa-qrcode"></i>
+                    <h3>Generate QR</h3>
+                    <p>Create a QR code for your wallet address</p>
+                    <a href="{{ url_for('generate_qr') }}" class="btn btn-primary">Generate</a>
+                </div>
+                <div class="qr-feature">
+                    <i class="fas fa-camera"></i>
+                    <h3>Scan QR</h3>
+                    <p>Scan QR codes to send transactions</p>
+                    <a href="{{ url_for('scan_qr') }}" class="btn btn-primary">Scan</a>
+                </div>
+            </div>
+            <hr class="section-divider">
+            <div class="predefined-wallets">
+                <h2>Predefined Wallets</h2>
+                <ul>
+                    {% for key in predefined_keys %}
+                    <li><a href="{{ url_for('load_predefined_wallet', index=loop.index0) }}">
+                        <i class="fas fa-user-circle"></i> Public Key: {{ key.public_key }}
+                    </a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="how-to-use">
+                <h2>How to Use This Website</h2>
+                <p>Welcome to the Solana Blockchain Suite! Here's how to get started:</p>
+                <ol>
+                    <li><strong>Create a Wallet:</strong> Click on "Create Wallet" to generate a new Solana wallet. Save your private key securely.</li>
+                    <li><strong>Load a Wallet:</strong> Use "Load Wallet" to access an existing wallet using your private key.</li>
+                    <li><strong>Check Balance:</strong> View your wallet's balance in SOL.</li>
+                    <li><strong>Send Transactions:</strong> Transfer SOL to another wallet by entering the receiver's address and amount.</li>
+                    <li><strong>QR Code Features:</strong> Generate QR codes for your wallet or scan QR codes to send transactions quickly.</li>
+                    <li><strong>Transaction History:</strong> View your past transactions.</li>
+                    <li><strong>Latest Block Info:</strong> Check the latest block details on the Solana blockchain.</li>
+                    <li><strong>Upload to Google Drive:</strong> Upload files to Google Drive (requires Google credentials).</li>
+                    <li><strong>Validate Keypair:</strong> Verify if a public and private key pair is valid.</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
